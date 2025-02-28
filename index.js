@@ -5,20 +5,8 @@ const cors = require("cors");
 
 const app = express();
 app.use(express.json());
-const allowedOrigins = process.env.ALLOWED_ORIGINS.split(",");
 
-app.use(
-	cors({
-		origin: (origin, callback) => {
-			if (!origin || allowedOrigins.includes(origin)) {
-				callback(null, true);
-			} else {
-				callback(new Error("Not allowed by CORS"));
-			}
-		},
-		credentials: true,
-	})
-);
+app.use(cors());
 
 app.post("/create-checkout-session", async (req, res) => {
 	const { products } = req.body;
