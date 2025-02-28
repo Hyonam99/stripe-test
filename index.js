@@ -5,10 +5,23 @@ const cors = require("cors");
 
 const app = express();
 app.use(express.json());
-app.use(cors()); // Allow frontend to connect
+const allowedOrigins = process.env.ALLOWED_ORIGINS.split(",");
+
+app.use(
+	cors({
+		origin: (origin, callback) => {
+			if (!origin || allowedOrigins.includes(origin)) {
+				callback(null, true);
+			} else {
+				callback(new Error("Not allowed by CORS"));
+			}
+		},
+		credentials: true,
+	})
+);
 
 app.post("/create-checkout-session", async (req, res) => {
-	const { lineItems } = req.body;
+	const { products } = req.body;
 
 	try {
 		const session = await stripe.checkout.sessions.create({
@@ -16,7 +29,7 @@ app.post("/create-checkout-session", async (req, res) => {
 			mode: "payment",
 			success_url: "https://westafricanchow.shop/",
 			cancel_url: "https://westafricanchow.shop/cart",
-			line_items: lineItems.map((item) => ({
+			line_items: products.map((item) => ({
 				price_data: {
 					currency: item.currency,
 					product_data: { name: item.name },
