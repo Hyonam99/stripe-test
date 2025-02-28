@@ -31,9 +31,9 @@ app.post("/create-checkout-session", async (req, res) => {
 			cancel_url: "https://westafricanchow.shop/cart",
 			line_items: products.map((item) => ({
 				price_data: {
-					currency: item.currency,
+					currency: "usd",
 					product_data: { name: item.name },
-					unit_amount: item.amount,
+					unit_amount: Math.round(item.price * 100),
 				},
 				quantity: item.quantity,
 			})),
