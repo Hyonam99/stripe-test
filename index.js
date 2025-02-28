@@ -27,7 +27,7 @@ app.post("/create-checkout-session", async (req, res) => {
 		const session = await stripe.checkout.sessions.create({
 			payment_method_types: ["card"],
 			mode: "payment",
-			success_url: "https://westafricanchow.shop/",
+			success_url: "https://westafricanchow.shop/payment-success",
 			cancel_url: "https://westafricanchow.shop/cart",
 			line_items: products.map((item) => ({
 				price_data: {
