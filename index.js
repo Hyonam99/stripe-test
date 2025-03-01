@@ -17,6 +17,8 @@ app.post("/create-checkout-session", async (req, res) => {
 			mode: "payment",
 			success_url: "https://westafricanchow.shop/payment-success",
 			cancel_url: "https://westafricanchow.shop/cart",
+			phone_number_collection: { enabled: true },
+			billing_address_collection: "required",
 			line_items: products.map((item) => ({
 				price_data: {
 					currency: "usd",
